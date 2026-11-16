@@ -1,0 +1,6 @@
+{
+  "name": "@agent-console/pi-worker",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Reserved Pi SDK worker package; implemented in P0B-T01 onward"
+}
