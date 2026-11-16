@@ -20,6 +20,7 @@ required = [
  BASE / "PHASE_DEPENDENCIES_AND_GATES.md",
  BASE / "VERIFICATION_AND_TEST_STRATEGY.md",
  BASE / "AGENT_EXECUTION_PLAYBOOK.md",
+ BASE / "IMPLEMENTATION_STATUS.md",
  BASE / "specs/2026-11-16-master-product-architecture.md",
  BASE / "plans/2026-11-16-master-execution-plan.md",
  ROOT / "AGENTS.md",
