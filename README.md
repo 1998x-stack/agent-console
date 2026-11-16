@@ -1,12 +1,12 @@
-# Agent + Skill Store：六份工程文档框架
+# Agent Console — Pi-powered self-hosted Agent + Skill Store
 
-> Draft v0.1｜2026-11-16｜**设计文档，不代表产品已实现或测试已运行**
+> Draft v0.3｜2026-11-16｜**设计文档，不代表产品已实现或测试已运行**
 
 ## 产品目标
 
 一个面向办公用户和开发者的 Agent Workspace：用户可以完成任务，也可以把有效任务沉淀为 Skill，经历创建 → 测试 → 版本化发布 → 私人/团队/公共分发 → 维护/下架；平台对执行安全和公共生态进行治理。
 
-## 推荐阅读顺序与职责
+## 推荐阅读顺序与职责（六份基础文档 + 两份专题）
 
 | # | 文档 | 决定什么 | 主要产出 |
 | --- | --- | --- | --- |
@@ -46,3 +46,11 @@ python3 scripts/validate_docs.py
 本项目的首要交付形态为**用户本地 Docker Compose 部署的 Web Agent**：首次在 Web 配置模型提供商、API Key、Base URL 和 Model ID；每位用户的 Agent 通过受控执行环境访问逻辑目录 `/{user-id}/workspace`；内置离线可用的 Skill Store 与我的 Skill。
 
 详见 **[SELF_HOSTED_WORKSPACE_ARCHITECTURE.md](docs/SELF_HOSTED_WORKSPACE_ARCHITECTURE.md)**（Draft v0.2）。本文件是架构规范，**不是已经完成部署或通过 E2E 的证明**。建议在阅读六份原设计文档前先阅读该文件。
+
+## 内置引擎决策：Pi Agent（Draft v0.3）
+
+**正式确定使用 Pi 作为内置 Agent Engine**，而不是独立开发 LLM Agent loop。新增 [PI_AGENT_INTEGRATION.md](docs/PI_AGENT_INTEGRATION.md)，规定独立 Node/TypeScript Pi Worker、SDK / RPC 适配、Model Gateway、Pi Session、受控 Skill ResourceLoader、Tool Gateway、安全沙箱以及 Pi 专项 E2E。
+
+Pi 上游已迁移到 [earendil-works/pi](https://github.com/earendil-works/pi)，官方包名为 `@earendil-works/pi-coding-agent`（需发行版锁定和实际验证）。**Pi 本身不提供可信的文件/进程/网络权限隔离**；隔离、审批、密钥控制仍由本项目提供。原六份文档保留业务契约；新增两份实施专题：[自托管架构](docs/SELF_HOSTED_WORKSPACE_ARCHITECTURE.md)、[Pi 集成](docs/PI_AGENT_INTEGRATION.md)。
+
+仍为设计阶段：Pi SDK 构建、Docker 启动、模型调用、沙箱和 E2E 全部 **NOT RUN**。
