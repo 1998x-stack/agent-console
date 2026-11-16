@@ -4,7 +4,7 @@
 
 ## 1. 依赖拓扑
 
-§§§mermaid
+```mermaid
 flowchart TD
   P0A["P0A · Self-hosted Setup & BYOK"] --> P0B["P0B · Pi Runner & Workspace"]
   P0B --> P0C["P0C · Local Skill & E2E"]
@@ -17,7 +17,7 @@ flowchart TD
   P1 -.-> Q
   P2 -.-> Q
   P3 -.-> Q
-§§§
+```
 
 其中 P3 的组件按真实需求激活；不要求为了“路线完成”实现全部功能。P0B/P0C 可迭代，但**不得绕过单用户的文件/密钥隔离要求**。
 
@@ -45,7 +45,7 @@ flowchart TD
 
 - 非授权读取任何其他用户或宿主敏感文件；明文 Key 出现在日志/Session/Tool Env；
 - Web 初始化存在重复管理员/弱默认密码；
-- Pi Runner 可利用项目 §.pi/extensions§ 任意在主服务权限域执行；
+- Pi Runner 可利用项目 `.pi/extensions` 任意在主服务权限域执行；
 - Run Status = SUCCEEDED，但验证器未运行或 Artifact 已损坏；
 - 终止/重试重复产生外部副作用；
 - 无法从全新数据卷启动及重启保留核心持久数据；
@@ -53,7 +53,7 @@ flowchart TD
 
 ## 5. Gate 证据格式
 
-§§§text
+```text
 Phase ID:
 Branch/Commit/Image digest:
 Host OS + Docker version:
@@ -65,9 +65,9 @@ Failure / NOT RUN:
 Artifacts / logs paths (redacted):
 Decision: PASS / FAIL / BLOCKED / NOT RUN
 Approved by / date:
-§§§
+```
 
-§PASS§ 必须具备真实命令输出和风险评审；文档完整不能作为阶段 Gate 的 §PASS§ 证据。默认从 §NOT RUN§ 开始。
+`PASS` 必须具备真实命令输出和风险评审；文档完整不能作为阶段 Gate 的 `PASS` 证据。默认从 `NOT RUN` 开始。
 
 ## 6. 迁移/变更与恢复门禁
 
@@ -80,4 +80,4 @@ Approved by / date:
 
 ## 7. 阶段外紧急修复
 
-严重漏洞可以中断当前阶段；先复现 → 写失败回归 → 修复 → 验证 → 复盘 §docs/gotchas.md§，并对更高阶段依赖做回归。紧急修复不能以“后期再补测试”为常态。
+严重漏洞可以中断当前阶段；先复现 → 写失败回归 → 修复 → 验证 → 复盘 `docs/gotchas.md`，并对更高阶段依赖做回归。紧急修复不能以“后期再补测试”为常态。
