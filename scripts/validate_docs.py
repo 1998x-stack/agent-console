@@ -33,6 +33,7 @@ expected = [
     'superpowers/PHASE_DEPENDENCIES_AND_GATES.md',
     'superpowers/VERIFICATION_AND_TEST_STRATEGY.md',
     'superpowers/AGENT_EXECUTION_PLAYBOOK.md',
+    'superpowers/IMPLEMENTATION_STATUS.md',
     'superpowers/specs/2026-11-16-master-product-architecture.md',
     'superpowers/plans/2026-11-16-master-execution-plan.md',
     'superpowers/specs/2026-11-16-p0a-bootstrap-models-spec.md',
