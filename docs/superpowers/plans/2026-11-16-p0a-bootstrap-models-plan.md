@@ -208,3 +208,16 @@
 - [ ] No user secret in CI or public artifacts; no skipped tests.
 - [ ] Gate G0 evidence manifest and explicit PASS/FAIL/BLOCKED/NOT RUN decision.
 **Execution handoff:** Review spec and this plan, then execute one task per reviewable commit. Prefer fresh subagent implementation + spec/quality reviewers when available; otherwise inline with explicit review limitation. Do not merge automatically.
+
+## Explicit AC Coverage (implementation ownership)
+
+- P0A-AC01 → P0A-T02, P0A-T09.
+- P0A-AC02 → P0A-T04, P0A-T05.
+- P0A-AC03 → P0A-T05, P0A-T06, P0A-T07, P0A-T09.
+- P0A-AC04 → P0A-T08, P0A-T09.
+- P0A-AC05 → P0A-T08, P0A-T09.
+- P0A-AC06 → P0A-T03, P0A-T09.
+- P0A-AC07 → P0A-T07.
+- P0A-AC08 → P0A-T06, P0A-T09.
+
+**Current test state:** ALL NOT RUN until a developer executes these exact tasks and records evidence.
