@@ -1,6 +1,6 @@
 # Agent Console — Repository Agent Instructions
 
-This repo is currently **documentation-first**. Read docs/superpowers/README.md first, then the master spec, current phase spec and matching implementation plan. Do not treat a design doc as proof of code running.
+This repo is currently **documentation-first**. Read docs/superpowers/README.md and docs/superpowers/IMPLEMENTATION_STATUS.md first, then the master spec, current phase spec and matching implementation plan. Do not treat a design doc as proof of code running.
 
 ## Mandatory workflow
 
