@@ -2,7 +2,7 @@
 
 > **状态：DESIGN / NOT IMPLEMENTED** · 2026-11-16 · 当前仓库架构提议，不表示已运行 Docker / Pi / DB / E2E。
 >
-> 产品：自托管、Docker Compose、Web BYOK（Provider / API Key / Base URL / Model ID）、Pi Agent 独立 Worker、服务端绑定 §/{user-id}/workspace§、内置 Skill Store（用户既消费又创造）。
+> 产品：自托管、Docker Compose、Web BYOK（Provider / API Key / Base URL / Model ID）、Pi Agent 独立 Worker、服务端绑定 `/{user-id}/workspace`、内置 Skill Store（用户既消费又创造）。
 
 ## 从哪开始
 
@@ -10,7 +10,7 @@
 2. **[WORKFLOW](WORKFLOW_AND_HANDOFF.md)**：按 Superpowers 方法执行：spec → review → plan → RED/GREEN/REFACTOR → 双层 review → evidence → PR → Gate。不是把“写计划”当成“完成代码”。
 3. **[PHASES](PHASE_DEPENDENCIES_AND_GATES.md)**：六阶段依赖、停止条件、范围限制和出口准则。
 4. **[MASTER PLAN](plans/2026-11-16-master-execution-plan.md)**：任务顺序、每阶段前置条件、原子任务索引和跨阶段集成门禁。
-5. **阶段 spec + plan 成对阅读**：先看 §spec§ 再执行 §plan§；没有合格 spec 不应开始写代码。
+5. **阶段 spec + plan 成对阅读**：先看 `spec` 再执行 `plan`；没有合格 spec 不应开始写代码。
 6. **[Evidence & TDD](VERIFICATION_AND_TEST_STRATEGY.md)**：真实测试证据、失败注入、人工审核与 Release Gate。
 7. **[Agent handoff](AGENT_EXECUTION_PLAYBOOK.md)**：交给 Codex/Pi Agent 的任务执行指令与交接协议。
 
@@ -30,7 +30,7 @@
 - 不采用 SaaS-first。P0 必须可以离线启动并浏览内置技能，连接远端模型是用户明确配置的行为。
 - Pi SDK 是 Agent Engine，不是权限边界；未知 Skill/Extension 不得自动获得 shell、网络、文件系统权限。
 - 目录路径由登录用户 UUID 与服务端 Workspace ACL 决定，绝不信任 URL、请求体或 Prompt 指定的 mount。
-- §Skill / Release / Listing / Installation§ 四对象独立，§Uninstall ≠ Unlist ≠ Revoke§。
+- `Skill / Release / Listing / Installation` 四对象独立，`Uninstall ≠ Unlist ≠ Revoke`。
 - 真实模型测试、模拟测试、构建和手工验收分别标状态。**NOT RUN ≠ PASS**。
 - 阶段不因“页面做好了”就通过，必须包含端到端证据与安全负例。
 
@@ -54,4 +54,4 @@
 
 ## 交付状态
 
-此文档集本身的静态检查可以验收；任何工程代码/数据库/运行安全验收均应标 §NOT RUN§，直到出现确切命令、退出码、日志、镜像版本和 SHA 的可核查证据。
+此文档集本身的静态检查可以验收；任何工程代码/数据库/运行安全验收均应标 `NOT RUN`，直到出现确切命令、退出码、日志、镜像版本和 SHA 的可核查证据。
