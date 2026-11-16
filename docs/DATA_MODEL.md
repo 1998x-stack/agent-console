@@ -269,3 +269,34 @@ CREATE INDEX idx_releases_skill_time ON skill_releases(skill_id,created_at DESC)
 - [ ] 是否从第一天启用 RLS、如何组织运维账号绕过规则与审计。
 - [ ] 私人 workspace 的共享和数据迁移策略。
 - [ ] 对象存储版本保留与垃圾回收周期。
+
+## 9. 自托管模型连接与本地工作区补充 Schema（新增）
+
+参见 [Self-hosted Workspace](SELF_HOSTED_WORKSPACE_ARCHITECTURE.md)。下列 DDL 是**设计草案，未在 PostgreSQL 执行**。存储目录依赖服务端 UUID 推导，严禁保存来自客户端的可任意挂载路径。
+
+```sql
+CREATE TABLE model_connections (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  owner_user_id uuid REFERENCES users(id),
+  scope text NOT NULL CHECK (scope IN ('deployment','user')),
+  protocol text NOT NULL CHECK (protocol IN ('openai_chat','openai_responses','ollama','native')),
+  name text NOT NULL,
+  base_url text NOT NULL,
+  encrypted_secret_ref text,
+  enabled boolean NOT NULL DEFAULT true,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  CHECK ((scope = 'user' AND owner_user_id IS NOT NULL)
+      OR (scope = 'deployment' AND owner_user_id IS NULL))
+);
+CREATE TABLE model_aliases (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  connection_id uuid NOT NULL REFERENCES model_connections(id),
+  external_model_id text NOT NULL,
+  display_name text NOT NULL,
+  tool_calling_status text NOT NULL DEFAULT 'untested'
+    CHECK (tool_calling_status IN ('untested','passed','failed')),
+  UNIQUE (connection_id,external_model_id)
+);
+```
+
+所有 owner 作用域通过服务端授权读取，DB 数据存在也不意味着已完成行级安全隔离。密钥引用需关联实际加密秘密存储（含轮换/备份策略）。工作区实体沿用现有 `workspaces.owner_user_id`，磁盘路径使用 `[DATA_DIR]/users/[owner_uuid]/workspace`，不要加入可被篡改的绝对路径作为授权来源。
