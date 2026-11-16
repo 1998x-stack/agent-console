@@ -11,6 +11,8 @@ expected = [
     'SECURITY_MODEL.md',
     'DATA_MODEL.md',
     'MVP_EXECUTION_PLAN.md',
+    'SELF_HOSTED_WORKSPACE_ARCHITECTURE.md',
+    'PI_AGENT_INTEGRATION.md',
 ]
 errors=[]
 for name in expected:
@@ -24,6 +26,8 @@ for name in expected:
     if sum(line.startswith('```') for line in text.splitlines())%2:
         errors.append(f'{name}: unbalanced code fences')
     for link in re.findall(r'\]\(([^)]+\.md)\)',text):
+        if link.startswith(('http://', 'https://')) or link.startswith('#'):
+            continue
         if not (path.parent/link).is_file():
             errors.append(f'{name}: broken relative link {link}')
 print(f'Checked {len(expected)} expected document files.')

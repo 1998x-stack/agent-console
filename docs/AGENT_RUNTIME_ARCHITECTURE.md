@@ -146,3 +146,24 @@ CREATED|PLANNING|RUNNING|WAITING_*|VALIDATING -> CANCELED
 ## 参考
 - MCP 正式规范：https://modelcontextprotocol.io/specification/2026-07-28
 - Agent Skills：https://agentskills.io/
+
+## 13. 自托管 Workspace 绑定与模型网关（新增）
+
+详细见 [Self-hosted Workspace](SELF_HOSTED_WORKSPACE_ARCHITECTURE.md)。
+
+- `RunContext` 必须绑定登录用户 ID、授权的 Workspace ID、服务端推导的工作路径、Model Connection ID、锁定的 Skill Release ID，以及 Capability Grants。不能接受来自客户端/模型任意指定的沙箱挂载目录。
+- 用户要求的逻辑执行目录为 `/{user-id}/workspace`；宿主机存储在 `[DATA_DIR]/users/[uuid]/workspace`；每次运行容器仅挂载对应用户授权文件，任务退出销毁临时执行容器。
+- 共享主 API 不负责 shell 执行；Runner Manager 负责隔离和生命周期；不能在 Web/API 主容器挂载高权限 Docker socket。
+- Web 模型提供商配置是 Agent 运行的先决能力：连接测试包含地址/鉴权/模型调用，工具调用单独测试；API Key 不传递给 Skill 或普通运行日志。
+- `POST /api/v1/agent/runs` 应从当前 Session 推导真实 Owner，并检查指定 Workspace 所有权。单用户 P0 先完成可信内置工具，未实现安全沙箱前禁止多用户任意 Skill 脚本。
+
+## 14. Pi Engine 作为 Agent Orchestrator 的正式实现选择
+
+引用 [PI_AGENT_INTEGRATION.md](PI_AGENT_INTEGRATION.md)。本文件的任务状态机、Run/Step/Event、Tool Gateway、审计与审批契约仍然是 **Agent Console 的业务权威**。具体 LLM loop 由 Pi SDK 实现：
+
+- Python/FastAPI 负责 Run API、任务队列、Policy 与状态持久化；Node `pi-worker` 使用 `@earendil-works/pi-coding-agent` 内嵌 `createAgentSession`。
+- Pi 的 `message_update`/`message_end`/`agent_settled` 信号映射为我方规范化事件，数据库 `run_events` 唯一持久顺序；`agent_end` 不能直接宣称任务成功，后续需 Validator。
+- Pi `SessionManager` 负责对话上下文；我方 `agent_conversations`/`agent_runs` 负责权限、任务生命周期与会话引用。
+- Pi `cwd` 必须绑定 Workspace 的服务端授权路径，`ResourceLoader` 仅接收符合权限/版本锁定的 Skills；默认进程自动发现需显式限制。
+- Pi 进程的 OS 权限与模型凭证属于独立安全边界，不能由 Prompt 或 Pi Extension 的确认事件代替 sandbox/Tool Gateway。
+- SDK 为正式架构，`pi --mode rpc` 是隔离 PoC/回归路径；必须在升级 Pi 版本时重复运行双路径 contract tests。

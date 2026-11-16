@@ -140,3 +140,27 @@ MVP 目标阈值需通过基线评测确定，禁止凭经验写入“95% 成功
 ## 参考资料
 - Agent Skills 标准：https://agentskills.io/
 - MCP：https://modelcontextprotocol.io/
+
+## 11. 自托管优先产品约束（2026-11-16 新增）
+
+完整用户旅程与验收在 [Self-hosted Workspace](SELF_HOSTED_WORKSPACE_ARCHITECTURE.md) 定义。本节是新增的 P0 接受标准，并覆盖与其冲突的 SaaS-first 假设：
+
+- **PRD-SH-01** 用户在本地运行 Docker Compose 后，无需预先配置云凭证即可访问 Web 并初始化管理员。
+- **PRD-SH-02** 从 Models 设置面板配置 Provider / API Key / Base URL / Model ID，连接失败时提供可操作的错误信息，允许本机 Ollama 和兼容服务。
+- **PRD-SH-03** 用户通过 Web 发起 Office/Code Agent 任务，实时查看进度、文件和产物；本机持久化，容器重启保留任务和文件。
+- **PRD-SH-04** 每个用户拥有服务端授权映射的逻辑目录 `/{user-id}/workspace`，浏览器自报的 user-id 不能更改文件归属。
+- **PRD-SH-05** 普通用户在 Web 侧边栏进入 Skill Store、浏览内置离线 Skill、安装与调用；“我的 Skill”归用户工作台。
+- **PRD-SH-06** 未通过执行隔离与跨用户访问测试之前，只发布单用户本地可信执行模式，不开放多用户第三方任意脚本运行。
+
+**非目标澄清**：首发不需要远程 SaaS 控制平面、公共注册账户、在线 Skill 市场、付费结算。公共市场与企业治理留给后续阶段。
+
+## 12. Pi 原生 Agent 的用户体验要求（新增）
+
+用户只看到 **Agent**，不需要知道后端 Pi CLI 的术语。其 Session、工具、Skill、模型能力在 Web 展现：
+
+- 选择 Model 并测试连接，开始 Office/Code 任务。无需每次打开终端执行 `pi`。
+- 浏览任务实时步骤、模型输出、每次工具调用、文件 Diff、审批，错误发生时显示可诊断类型。
+- 会话在 Docker 重启后可恢复（由 Pi SessionManager 与我方 Conversation/Run 数据协调），取消任务不等于清空会话。
+- Skill Store 的安装、启用和卸载在 Web 中完成，由后端为 Pi 装载选定的 Skill Release，不需要用户手动移动到 `~/.pi/agent/skills`。
+- Code 模式默认先通过只读代码分析，写入和 `bash` 需要有权限的独立沙箱；Office 模式的文档操作与 Code 共用 Pi Engine。
+- 验收需同时通过 Agent 运行时测试与产品侧 E2E，详见 [PI_AGENT_INTEGRATION.md](PI_AGENT_INTEGRATION.md)，禁止把 Pi CLI 能运行等同 Web 产品完成。

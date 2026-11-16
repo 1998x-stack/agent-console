@@ -269,3 +269,87 @@ CREATE INDEX idx_releases_skill_time ON skill_releases(skill_id,created_at DESC)
 - [ ] 是否从第一天启用 RLS、如何组织运维账号绕过规则与审计。
 - [ ] 私人 workspace 的共享和数据迁移策略。
 - [ ] 对象存储版本保留与垃圾回收周期。
+
+## 9. 自托管模型连接与本地工作区补充 Schema（新增）
+
+参见 [Self-hosted Workspace](SELF_HOSTED_WORKSPACE_ARCHITECTURE.md)。下列 DDL 是**设计草案，未在 PostgreSQL 执行**。存储目录依赖服务端 UUID 推导，严禁保存来自客户端的可任意挂载路径。
+
+```sql
+CREATE TABLE model_connections (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  owner_user_id uuid REFERENCES users(id),
+  scope text NOT NULL CHECK (scope IN ('deployment','user')),
+  protocol text NOT NULL CHECK (protocol IN ('openai_chat','openai_responses','ollama','native')),
+  name text NOT NULL,
+  base_url text NOT NULL,
+  encrypted_secret_ref text,
+  enabled boolean NOT NULL DEFAULT true,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  CHECK ((scope = 'user' AND owner_user_id IS NOT NULL)
+      OR (scope = 'deployment' AND owner_user_id IS NULL))
+);
+CREATE TABLE model_aliases (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  connection_id uuid NOT NULL REFERENCES model_connections(id),
+  external_model_id text NOT NULL,
+  display_name text NOT NULL,
+  tool_calling_status text NOT NULL DEFAULT 'untested'
+    CHECK (tool_calling_status IN ('untested','passed','failed')),
+  UNIQUE (connection_id,external_model_id)
+);
+```
+
+所有 owner 作用域通过服务端授权读取，DB 数据存在也不意味着已完成行级安全隔离。密钥引用需关联实际加密秘密存储（含轮换/备份策略）。工作区实体沿用现有 `workspaces.owner_user_id`，磁盘路径使用 `[DATA_DIR]/users/[owner_uuid]/workspace`，不要加入可被篡改的绝对路径作为授权来源。
+
+## 10. Pi Session / Conversation / Runtime Profile 增量 Schema（Draft，NOT RUN）
+
+仅为后续迁移设计，执行前需要验证 PostgreSQL 类型、现有主外键、版本迁移与 RLS。Pi JSONL 由 Pi SessionManager 持有；数据库只记录可授权读取的索引、运行状态和审计，不直接篡改 Pi Session 文件。
+
+```sql
+CREATE TABLE agent_conversations (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  workspace_id uuid NOT NULL REFERENCES workspaces(id),
+  created_by_user_id uuid NOT NULL REFERENCES users(id),
+  title text NOT NULL DEFAULT '',
+  status text NOT NULL DEFAULT 'active'
+    CHECK (status IN ('active','archived')),
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX agent_conversations_by_workspace
+  ON agent_conversations(workspace_id, created_at DESC);
+
+CREATE TABLE pi_session_refs (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  conversation_id uuid NOT NULL UNIQUE REFERENCES agent_conversations(id),
+  session_store_ref text NOT NULL,
+  pi_package_version text NOT NULL,
+  format_version text,
+  revision bigint NOT NULL DEFAULT 0 CHECK (revision >= 0),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+-- session_store_ref 是服务端生成的内部受控引用，而不是任意客户端可提交路径。
+
+CREATE TABLE pi_runtime_profiles (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  workspace_id uuid NOT NULL REFERENCES workspaces(id),
+  mode text NOT NULL CHECK (mode IN ('general','office','code')),
+  sandbox_profile text NOT NULL,
+  allowed_tool_names jsonb NOT NULL DEFAULT '[]'::jsonb
+    CHECK (jsonb_typeof(allowed_tool_names) = 'array'),
+  created_at timestamptz NOT NULL DEFAULT now(),
+  UNIQUE(workspace_id, mode)
+);
+
+CREATE TABLE agent_run_resources (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  run_id uuid NOT NULL REFERENCES agent_runs(id),
+  release_id uuid REFERENCES skill_releases(id),
+  content_sha256 text,
+  model_alias_id uuid REFERENCES model_aliases(id),
+  sandbox_image_digest text,
+  recorded_at timestamptz NOT NULL DEFAULT now(),
+  CHECK (content_sha256 IS NULL OR length(content_sha256) = 64)
+);
+```
+
+**迁移注意**：`agent_run_resources` 使用 surrogate PK；后续应补充去重逻辑（例如带 NULL 语义的部分唯一索引），支持无 Skill 的 Run 和单次 Run 的多个 Skill。`pi_session_refs` 单写者约束需要数据库租约与 Worker 协议共同保证，单个 `UNIQUE` 不够。`agent_runs` 与 `conversation_id` 的外键、状态补充应做双写/回填/验证后再加 `NOT NULL`。
