@@ -1,0 +1,6 @@
+{
+  "name": "@agent-console/web",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Reserved Next.js Web UI package; implemented in P0A-T02 onward"
+}
