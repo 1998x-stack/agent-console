@@ -140,3 +140,16 @@ MVP 目标阈值需通过基线评测确定，禁止凭经验写入“95% 成功
 ## 参考资料
 - Agent Skills 标准：https://agentskills.io/
 - MCP：https://modelcontextprotocol.io/
+
+## 11. 自托管优先产品约束（2026-11-16 新增）
+
+完整用户旅程与验收在 [Self-hosted Workspace](SELF_HOSTED_WORKSPACE_ARCHITECTURE.md) 定义。本节是新增的 P0 接受标准，并覆盖与其冲突的 SaaS-first 假设：
+
+- **PRD-SH-01** 用户在本地运行 Docker Compose 后，无需预先配置云凭证即可访问 Web 并初始化管理员。
+- **PRD-SH-02** 从 Models 设置面板配置 Provider / API Key / Base URL / Model ID，连接失败时提供可操作的错误信息，允许本机 Ollama 和兼容服务。
+- **PRD-SH-03** 用户通过 Web 发起 Office/Code Agent 任务，实时查看进度、文件和产物；本机持久化，容器重启保留任务和文件。
+- **PRD-SH-04** 每个用户拥有服务端授权映射的逻辑目录 `/{user-id}/workspace`，浏览器自报的 user-id 不能更改文件归属。
+- **PRD-SH-05** 普通用户在 Web 侧边栏进入 Skill Store、浏览内置离线 Skill、安装与调用；“我的 Skill”归用户工作台。
+- **PRD-SH-06** 未通过执行隔离与跨用户访问测试之前，只发布单用户本地可信执行模式，不开放多用户第三方任意脚本运行。
+
+**非目标澄清**：首发不需要远程 SaaS 控制平面、公共注册账户、在线 Skill 市场、付费结算。公共市场与企业治理留给后续阶段。
