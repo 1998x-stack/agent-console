@@ -1,0 +1,13 @@
+{
+  "name": "@agent-console/workspace",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.34.9",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "check": "node --test tests/node/*.test.mjs",
+    "test:unit": "node --test tests/node/*.test.mjs"
+  }
+}
