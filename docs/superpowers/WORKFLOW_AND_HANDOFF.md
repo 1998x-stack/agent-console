@@ -12,11 +12,11 @@
 - 没有**看见测试失败**就写最小修复并声称完成 TDD。
 - 以 mock 模型测试替代真实 Pi + 真实 Provider 集成验收。
 - 把 LLM “我完成了”、CI 未运行或文档检查等同代码验收。
-- 直接在 §main§ 实验或不经用户授权合并 PR。
+- 直接在 `main` 实验或不经用户授权合并 PR。
 
 ## 1. 每个 Feature 的唯一闭环
 
-§§§text
+```text
 Discover Intent / Current Repo State
   → Write small Design Spec (goals, non-goals, architecture, data/permission, errors, AC)
   → Spec Review (product correctness + security constraints)
@@ -28,7 +28,7 @@ Discover Intent / Current Repo State
   → Verification before completion (read outputs; preserve failures)
   → PR + gotchas + ADR/risk updates + user review
   → Next phase only after explicit exit gate
-§§§
+```
 
 如果是**明确授权实现**且 Spec 已由用户前面确认，可以连续执行计划，遇到非阻断问题按 ADR 做小范围判断；如遇不可逆操作、越权风险、跨仓库/生产环境变更则停下取得授权。
 
@@ -50,7 +50,7 @@ Discover Intent / Current Repo State
 ## 3. Plan 写作格式
 
 每份实施计划包含：
-- §Goal§、§Architecture§、§Tech Stack§、§Spec§ 的文首元数据；
+- `Goal`、`Architecture`、`Tech Stack`、`Spec` 的文首元数据；
 - Global constraints（必须包含独立 Pi Worker、私有工作区、密钥脱敏、Skill 权限与 NOT RUN）；
 - 任务编号与依赖，**每任务一个可独立被 reviewer 拒绝的产物**；
 - 任务文件路径、预计新增/修改的类型或 API、测试名称、运行命令、预期 RED 与 GREEN；
@@ -71,7 +71,7 @@ Discover Intent / Current Repo State
 4. 实现最小功能，执行该测试并确认变绿；
 5. 运行关联测试、静态检查、API Contract 和必要安全负例，不能只执行单个 happy-path；
 6. 审查本任务：接口符合 Spec、权限最小、错误可诊断、无假测试/硬编码；
-7. Commit 并将证据写到 §docs/gotchas.md§ / 对应 PR 记录；
+7. Commit 并将证据写到 `docs/gotchas.md` / 对应 PR 记录；
 8. Review A（Spec 合规）：满足用户故事、AC、权限、非目标？
 9. Review B（质量/安全）：是否测试可靠、没有路径或密钥问题、无重复代码？
 10. 任一 Critical/Important 未处理，任务保持 BLOCKED，不标 DONE。
@@ -80,7 +80,7 @@ Discover Intent / Current Repo State
 
 ## 5. 前置检查与多 Agent 协作
 
-- 使用独立 branch/worktree，记录 base commit；开始前运行已有完整 baseline（如果仓库还没有测试，记录 §NOT AVAILABLE§，先创建真实可失败的 test harness）。
+- 使用独立 branch/worktree，记录 base commit；开始前运行已有完整 baseline（如果仓库还没有测试，记录 `NOT AVAILABLE`，先创建真实可失败的 test harness）。
 - 任务之间共享接口必须先冻结，特别是 RunSpec、RunEvent、AuthContext、WorkspacePath、ModelConnection、Skill Release。
 - 可并行的：Web UI shell、模型协议 mock/fixture、Skill 元数据 UI（需共享类型冻结）。
 - 不能随意并行的：DB migration 与 API schema 重写；Pi Session 格式与 Worker 事件；权限与 OS mount 模型；同一文件编辑。
@@ -88,7 +88,7 @@ Discover Intent / Current Repo State
 
 ## 6. Systematic debugging
 
-遇到异常先收集：完整错误类别、最小复现、代码/配置差异、依赖版本、环境。然后形成假设 → 设计能区分假设的实验 → 确定根因 → 加失败回归 → 最小修复 → 运行全部关联测试。禁止一次改多项掩盖真正原因。每次将 root cause 与 prevention 写到 §docs/gotchas.md§。
+遇到异常先收集：完整错误类别、最小复现、代码/配置差异、依赖版本、环境。然后形成假设 → 设计能区分假设的实验 → 确定根因 → 加失败回归 → 最小修复 → 运行全部关联测试。禁止一次改多项掩盖真正原因。每次将 root cause 与 prevention 写到 `docs/gotchas.md`。
 
 ## 7. Verification before completion
 
