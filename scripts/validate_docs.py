@@ -13,6 +13,21 @@ expected = [
     'MVP_EXECUTION_PLAN.md',
     'SELF_HOSTED_WORKSPACE_ARCHITECTURE.md',
     'PI_AGENT_INTEGRATION.md',
+    'functional-decomposition/README.md',
+    'functional-decomposition/01_USERS_AND_JOURNEYS.md',
+    'functional-decomposition/02_CLIENT_IA_AND_INTERACTIONS.md',
+    'functional-decomposition/03_MODEL_ONBOARDING.md',
+    'functional-decomposition/04_WORKSPACE_AND_ARTIFACTS.md',
+    'functional-decomposition/05_PI_RUNTIME_AND_SESSIONS.md',
+    'functional-decomposition/06_SKILL_CREATOR_AND_STORE.md',
+    'functional-decomposition/07_ROLES_ADMIN_AND_SECURITY.md',
+    'functional-decomposition/08_DATA_API_CONTRACTS.md',
+    'functional-decomposition/09_DOCKER_DEPLOY_AND_OPERATIONS.md',
+    'functional-decomposition/10_QUALITY_SECURITY_EVALS.md',
+    'functional-decomposition/11_ROADMAP_AND_BACKLOG.md',
+    'functional-decomposition/12_DECISIONS_AND_RISKS.md',
+    'functional-decomposition/13_FEATURE_MATRIX_AND_TRACEABILITY.md',
+    'functional-decomposition/14_OPENWEBUI_PI_REFERENCE_MAPPING.md',
 ]
 errors=[]
 for name in expected:
