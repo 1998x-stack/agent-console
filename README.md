@@ -60,3 +60,23 @@ Pi 上游已迁移到 [earendil-works/pi](https://github.com/earendil-works/pi)�
 在原有 6 份工程基础设计、自托管专题和 Pi 集成专题之外，新增 **[功能拆解系列文档](docs/functional-decomposition/README.md)**。覆盖用户画像/端到端旅程、Web IA、BYOK 模型连接、用户工作区、Pi Runtime、Skill Store 创作/发布/下架、管理员与安全、API 与数据一致性、Docker 运维、对抗评测、PR Backlog、ADR 风险，以及 **79 项功能追踪矩阵**和 Open WebUI × Pi 的参考实现对照。
 
 **阅读顺序**：先看 [功能目录](docs/functional-decomposition/README.md)，再看 [13 功能矩阵](docs/functional-decomposition/13_FEATURE_MATRIX_AND_TRACEABILITY.md)，根据工作项阅读各专题。完整设计不代表已实现；Docker、Pi SDK、DB Migration 和真实 E2E 仍为 **NOT RUN**。
+
+## Superpowers-style 六阶段 Spec / Plan（v0.5）
+
+已规划 **P0A → P0B → P0C → P1 → P2 → P3** 的配对规格与实施计划，共 **50 个可测试任务**，并提供开发协议、RED/GREEN/REFACTOR 证据模板、Agent 交接、阶段 Gate、风险、[50 项任务台账](docs/superpowers/IMPLEMENTATION_STATUS.md)与验证脚本。
+
+- [系列文档入口](docs/superpowers/README.md)
+- [Master Product Spec](docs/superpowers/specs/2026-11-16-master-product-architecture.md)
+- [Master Implementation Plan](docs/superpowers/plans/2026-11-16-master-execution-plan.md)
+- [Superpowers-style workflow](docs/superpowers/WORKFLOW_AND_HANDOFF.md)
+- [Phase gates](docs/superpowers/PHASE_DEPENDENCIES_AND_GATES.md)
+- [Agent instructions](AGENTS.md)
+
+计划里的路径、测试和接口均为**目标工程设计**，不代表已存在。真实 Pi SDK、模型、Docker、E2E、安全隔离和迁移验收仍为 **NOT RUN**。
+
+文档结构检查（在有本地仓库的环境中执行）：
+
+```bash
+python3 scripts/validate_docs.py
+python3 scripts/validate_phased_docs.py
+```
