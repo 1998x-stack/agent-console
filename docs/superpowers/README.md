@@ -11,8 +11,9 @@
 3. **[PHASES](PHASE_DEPENDENCIES_AND_GATES.md)**：六阶段依赖、停止条件、范围限制和出口准则。
 4. **[MASTER PLAN](plans/2026-11-16-master-execution-plan.md)**：任务顺序、每阶段前置条件、原子任务索引和跨阶段集成门禁。
 5. **阶段 spec + plan 成对阅读**：先看 `spec` 再执行 `plan`；没有合格 spec 不应开始写代码。
-6. **[Evidence & TDD](VERIFICATION_AND_TEST_STRATEGY.md)**：真实测试证据、失败注入、人工审核与 Release Gate。
-7. **[Agent handoff](AGENT_EXECUTION_PLAYBOOK.md)**：交给 Codex/Pi Agent 的任务执行指令与交接协议。
+6. **[Implementation Status](IMPLEMENTATION_STATUS.md)**：50 项任务状态台账与下一项执行入口；严格区分设计与实际完成。
+7. **[Evidence & TDD](VERIFICATION_AND_TEST_STRATEGY.md)**：真实测试证据、失败注入、人工审核与 Release Gate。
+8. **[Agent handoff](AGENT_EXECUTION_PLAYBOOK.md)**：交给 Codex/Pi Agent 的任务执行指令与交接协议。
 
 ## 六个阶段
 
