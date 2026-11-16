@@ -152,3 +152,18 @@ Decision = authenticated
 4. **执行隔离**：禁止给 Web 或 API 容器挂载宿主 `docker.sock`；第三方脚本需独立沙箱、最小挂载、资源/网络/时间限制及动作级审批。
 5. **默认部署**：先绑定 loopback、关闭未授权公开注册、保护首次管理员初始化；局域网开放要求 HTTPS/认证/备份策略。
 6. **多用户门禁**：未通过跨用户文件、密钥、任务与 Skill 隔离测试之前不得宣称支持安全的多用户任意代码执行。
+
+## 12. Pi 专项风险与强制控制
+
+详见 [PI_AGENT_INTEGRATION.md](PI_AGENT_INTEGRATION.md)、Pi 官方 [Containerization](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/containerization.md) 和 [Extensions](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/extensions.md)。
+
+| 风险 | 必须实现的边界 | 负面测试 |
+|---|---|---|
+| Pi 原生 `bash`/`write`/`edit` 可访问进程 OS 权限 | 整体进程或 Tool 在受控沙箱执行，文件挂载最小化 | 无法读取其他用户目录和宿主机敏感文件 |
+| Pi 自动发现 `.pi/extensions` 或外部 Pi package | 受控 ResourceLoader、项目可信源白名单、拒绝未知 TS 扩展 | 恶意 repo 不能自动加载执行代码 |
+| Web 用户配置恶意 Base URL | Model Gateway SSRF 规则、LAN 例外仅管理员允许 | 不能访问云元数据或内部控制接口 |
+| Pi 模型 Key 进入 Agent/子进程环境 | Vault + 短期代理凭证，密钥不进入工具/日志/包 | Tool 环境、Trace、Artifact 无明文 Key |
+| Pi 中断/重试重复写入 | Agent Console 幂等审批、外部副作用去重 | 失败重试不重复发送邮件/推送代码 |
+| Pi 插件/UI 确认被视作鉴权 | 策略在后端和 Tool Gateway，审批对象级授权 | 未授权 HTTP 请求无法触发危险 Tool |
+
+**阶段限制**：仅使用 Pi SDK tool allowlist 不足以构成隔离。P0 只允许可信测试环境及受控工具；第三方 Skill/多用户 shell 必须等待实际沙箱验收。
