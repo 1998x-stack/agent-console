@@ -172,3 +172,17 @@
 - [ ] Write changes apply only with user authorization and base version guard.
 - [ ] Backups/restart preserve drafts, releases and current installation pin.
 - [ ] Do not merge automatically; report PASS/FAILED/BLOCKED/NOT RUN.
+
+## Explicit AC Coverage (implementation ownership)
+
+- P1-AC01 → P1-T01, P1-T04, P1-T09.
+- P1-AC02 → P1-T01, P1-T03, P1-T09.
+- P1-AC03 → P1-T05, P1-T09.
+- P1-AC04 → P1-T06, P1-T09.
+- P1-AC05 → P1-T02, P1-T09.
+- P1-AC06 → P1-T07, P1-T09.
+- P1-AC07 → P1-T08, P1-T09.
+- P1-AC08 → P1-T06, P1-T09.
+- P1-AC09 → P1-T09.
+
+**Current test state:** ALL NOT RUN until a developer executes these exact tasks and records evidence.
