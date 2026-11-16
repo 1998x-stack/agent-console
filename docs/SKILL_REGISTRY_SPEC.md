@@ -167,3 +167,13 @@ GET    /api/v1/skills/search
 ## 参考
 - Agent Skills 官方规范：https://agentskills.io/specification
 - MCP 规范：https://modelcontextprotocol.io/specification/2026-07-28
+
+## 12. 本地优先 Skill Store（新增）
+
+完整交互与部署规范见 [Self-hosted Workspace](SELF_HOSTED_WORKSPACE_ARCHITECTURE.md)。
+
+- Registry 至少包括 **Bundled / Local / Optional Remote** 三个来源；Docker 首次启动即使断网也能浏览内置技能。
+- 普通用户在 Client 侧边栏进入 Store：Explore / Installed / My Skills。创建、编辑、安装、升级、卸载都是普通用户能力；治理后台保留安全处置。
+- 安装记录应与用户/Workspace 绑定，安装时必须固定不可变 Release，权限申请需要运行时授权；安装动作不等于可以执行任意脚本。
+- 公共远程 Registry 必须可关闭，并在每次安装前校验来源、版本与内容哈希；本地离线安装、取消安装和重启后的安装状态必须有 E2E。
+- 本地“卸载”不得误触发公共 Listing 下架，本地“禁用”不得改写包资产所有权。
