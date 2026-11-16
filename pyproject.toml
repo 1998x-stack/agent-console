@@ -1,0 +1,10 @@
+[project]
+name = "agent-console-foundation"
+version = "0.0.0"
+description = "Agent Console foundation/validation workspace (not production API)"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
