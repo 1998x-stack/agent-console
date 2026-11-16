@@ -210,3 +210,17 @@
 - [ ] Gate G1 signed off before enabling P0C features.
 
 **Handoff:** Read P0B Spec and review this plan; execute task by task in isolated worktree and don't merge without authorization.
+
+## Explicit AC Coverage (implementation ownership)
+
+- P0B-AC01 → P0B-T01, P0B-T04, P0B-T05, P0B-T10.
+- P0B-AC02 → P0B-T02, P0B-T03, P0B-T04, P0B-T08, P0B-T10.
+- P0B-AC03 → P0B-T02, P0B-T06, P0B-T10.
+- P0B-AC04 → P0B-T07, P0B-T10.
+- P0B-AC05 → P0B-T10.
+- P0B-AC06 → P0B-T03, P0B-T09, P0B-T10.
+- P0B-AC07 → P0B-T08, P0B-T10.
+- P0B-AC08 → P0B-T03, P0B-T08, P0B-T09, P0B-T10.
+- P0B-AC09 → P0B-T05, P0B-T10.
+
+**Current test state:** ALL NOT RUN until a developer executes these exact tasks and records evidence.
