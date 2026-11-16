@@ -27,6 +27,7 @@ expected = [
     'functional-decomposition/11_ROADMAP_AND_BACKLOG.md',
     'functional-decomposition/12_DECISIONS_AND_RISKS.md',
     'functional-decomposition/13_FEATURE_MATRIX_AND_TRACEABILITY.md',
+    'functional-decomposition/14_OPENWEBUI_PI_REFERENCE_MAPPING.md',
 ]
 errors=[]
 for name in expected:
