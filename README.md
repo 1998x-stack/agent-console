@@ -63,7 +63,7 @@ Pi 上游已迁移到 [earendil-works/pi](https://github.com/earendil-works/pi)�
 
 ## Superpowers-style 六阶段 Spec / Plan（v0.5）
 
-已规划 **P0A → P0B → P0C → P1 → P2 → P3** 的配对规格与实施计划，共 **50 个可测试任务**，并提供开发协议、RED/GREEN/REFACTOR 证据模板、Agent 交接、阶段 Gate、风险与验证脚本。
+已规划 **P0A → P0B → P0C → P1 → P2 → P3** 的配对规格与实施计划，共 **50 个可测试任务**，并提供开发协议、RED/GREEN/REFACTOR 证据模板、Agent 交接、阶段 Gate、风险、[50 项任务台账](docs/superpowers/IMPLEMENTATION_STATUS.md)与验证脚本。
 
 - [系列文档入口](docs/superpowers/README.md)
 - [Master Product Spec](docs/superpowers/specs/2026-11-16-master-product-architecture.md)
