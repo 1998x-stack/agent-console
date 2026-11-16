@@ -25,7 +25,7 @@
 
 **Files:** Makefile; pnpm-workspace.yaml; package.json; pyproject.toml; apps/web/package.json; services/api/pyproject.toml; services/pi-worker/package.json; tests/unit/test_repo_layout.py; .github/workflows/ci.yml; docs/gotchas.md.
 
-**Interfaces:** §make check/docs-check/test-unit§ targets; layout detector must assert directory and lockfile presence; CI fails on a deliberate broken test.
+**Interfaces:** `make check/docs-check/test-unit` targets; layout detector must assert directory and lockfile presence; CI fails on a deliberate broken test.
 
 **Test command:** `python3 -m unittest discover -s tests/unit -p 'test_repo_layout.py' -v`
 **Expected RED:** missing directories, lockfiles and targets cause a test failure.
@@ -34,7 +34,7 @@
 - [ ] Confirm prerequisite Task commits and clean worktree; read exact Spec section.
 - [ ] Write a failing test in listed test file for: missing directories, lockfiles and targets cause a test failure.
 - [ ] Run `python3 -m unittest discover -s tests/unit -p 'test_repo_layout.py' -v` and record failing assertion + exit code (not missing test tooling).
-- [ ] Implement only this interface: §make check/docs-check/test-unit§ targets; layout detector must assert directory and lockfile presence; CI fails on a deliberate broken test.
+- [ ] Implement only this interface: `make check/docs-check/test-unit` targets; layout detector must assert directory and lockfile presence; CI fails on a deliberate broken test.
 - [ ] Rerun `python3 -m unittest discover -s tests/unit -p 'test_repo_layout.py' -v` until it passes; inspect output, then refactor.
 - [ ] Run `make check && make docs-check`; note real failures and security edge cases.
 - [ ] Commit task-only change, update `docs/gotchas.md`, request spec-compliance and code-quality reviews.
@@ -44,7 +44,7 @@
 
 **Files:** compose.yaml; apps/web/app/page.tsx; services/api/app/main.py; services/api/app/health.py; services/api/tests/test_health.py; tests/e2e/bootstrap.spec.ts.
 
-**Interfaces:** §GET /api/v1/health/live§, §GET /api/v1/health/ready§. Compose web :3000 loopback, api, postgres, pi-worker stub (not fake full Agent).
+**Interfaces:** `GET /api/v1/health/live`, `GET /api/v1/health/ready`. Compose web :3000 loopback, api, postgres, pi-worker stub (not fake full Agent).
 
 **Test command:** `uv run pytest services/api/tests/test_health.py -q`
 **Expected RED:** health route unavailable, readiness does not distinguish DB down.
@@ -53,7 +53,7 @@
 - [ ] Confirm prerequisite Task commits and clean worktree; read exact Spec section.
 - [ ] Write a failing test in listed test file for: health route unavailable, readiness does not distinguish DB down.
 - [ ] Run `uv run pytest services/api/tests/test_health.py -q` and record failing assertion + exit code (not missing test tooling).
-- [ ] Implement only this interface: §GET /api/v1/health/live§, §GET /api/v1/health/ready§. Compose web :3000 loopback, api, postgres, pi-worker stub (not fake full Agent).
+- [ ] Implement only this interface: `GET /api/v1/health/live`, `GET /api/v1/health/ready`. Compose web :3000 loopback, api, postgres, pi-worker stub (not fake full Agent).
 - [ ] Rerun `uv run pytest services/api/tests/test_health.py -q` until it passes; inspect output, then refactor.
 - [ ] Run `docker compose config -q && docker compose up -d --build && docker compose ps`; note real failures and security edge cases.
 - [ ] Commit task-only change, update `docs/gotchas.md`, request spec-compliance and code-quality reviews.
@@ -63,7 +63,7 @@
 
 **Files:** services/api/alembic/versions/0001_identity_models.py; services/api/app/db/models.py; services/api/tests/test_migrations.py.
 
-**Interfaces:** §users§, §workspaces§, §model_connections§, §model_aliases§ with UUID FK/unique constraints; migration upgrade/downgrade policy.
+**Interfaces:** `users`, `workspaces`, `model_connections`, `model_aliases` with UUID FK/unique constraints; migration upgrade/downgrade policy.
 
 **Test command:** `uv run pytest services/api/tests/test_migrations.py -q`
 **Expected RED:** fresh DB lacks tables/constraints or downgrade fails.
@@ -72,7 +72,7 @@
 - [ ] Confirm prerequisite Task commits and clean worktree; read exact Spec section.
 - [ ] Write a failing test in listed test file for: fresh DB lacks tables/constraints or downgrade fails.
 - [ ] Run `uv run pytest services/api/tests/test_migrations.py -q` and record failing assertion + exit code (not missing test tooling).
-- [ ] Implement only this interface: §users§, §workspaces§, §model_connections§, §model_aliases§ with UUID FK/unique constraints; migration upgrade/downgrade policy.
+- [ ] Implement only this interface: `users`, `workspaces`, `model_connections`, `model_aliases` with UUID FK/unique constraints; migration upgrade/downgrade policy.
 - [ ] Rerun `uv run pytest services/api/tests/test_migrations.py -q` until it passes; inspect output, then refactor.
 - [ ] Run `make test-integration`; note real failures and security edge cases.
 - [ ] Commit task-only change, update `docs/gotchas.md`, request spec-compliance and code-quality reviews.
@@ -82,7 +82,7 @@
 
 **Files:** services/api/app/setup/service.py; services/api/app/setup/routes.py; services/api/tests/test_bootstrap.py.
 
-**Interfaces:** §GET /api/v1/setup/status§; §POST /api/v1/setup/initialize-admin§ accepts local one-time capability, one admin max.
+**Interfaces:** `GET /api/v1/setup/status`; `POST /api/v1/setup/initialize-admin` accepts local one-time capability, one admin max.
 
 **Test command:** `uv run pytest services/api/tests/test_bootstrap.py -q`
 **Expected RED:** two concurrent bootstrap attempts both succeed or token not checked.
@@ -91,7 +91,7 @@
 - [ ] Confirm prerequisite Task commits and clean worktree; read exact Spec section.
 - [ ] Write a failing test in listed test file for: two concurrent bootstrap attempts both succeed or token not checked.
 - [ ] Run `uv run pytest services/api/tests/test_bootstrap.py -q` and record failing assertion + exit code (not missing test tooling).
-- [ ] Implement only this interface: §GET /api/v1/setup/status§; §POST /api/v1/setup/initialize-admin§ accepts local one-time capability, one admin max.
+- [ ] Implement only this interface: `GET /api/v1/setup/status`; `POST /api/v1/setup/initialize-admin` accepts local one-time capability, one admin max.
 - [ ] Rerun `uv run pytest services/api/tests/test_bootstrap.py -q` until it passes; inspect output, then refactor.
 - [ ] Run `make test-integration`; note real failures and security edge cases.
 - [ ] Commit task-only change, update `docs/gotchas.md`, request spec-compliance and code-quality reviews.
@@ -101,7 +101,7 @@
 
 **Files:** services/api/app/auth/routes.py; services/api/app/auth/session.py; services/api/tests/test_auth.py; apps/web/app/login/page.tsx.
 
-**Interfaces:** §POST /api/v1/auth/session§, §DELETE /api/v1/auth/session§, §GET /api/v1/auth/me§; HttpOnly Secure/SameSite and CSRF validation.
+**Interfaces:** `POST /api/v1/auth/session`, `DELETE /api/v1/auth/session`, `GET /api/v1/auth/me`; HttpOnly Secure/SameSite and CSRF validation.
 
 **Test command:** `uv run pytest services/api/tests/test_auth.py -q`
 **Expected RED:** unauthorized API accepted, CSRF bypass or session not invalidated.
@@ -110,7 +110,7 @@
 - [ ] Confirm prerequisite Task commits and clean worktree; read exact Spec section.
 - [ ] Write a failing test in listed test file for: unauthorized API accepted, CSRF bypass or session not invalidated.
 - [ ] Run `uv run pytest services/api/tests/test_auth.py -q` and record failing assertion + exit code (not missing test tooling).
-- [ ] Implement only this interface: §POST /api/v1/auth/session§, §DELETE /api/v1/auth/session§, §GET /api/v1/auth/me§; HttpOnly Secure/SameSite and CSRF validation.
+- [ ] Implement only this interface: `POST /api/v1/auth/session`, `DELETE /api/v1/auth/session`, `GET /api/v1/auth/me`; HttpOnly Secure/SameSite and CSRF validation.
 - [ ] Rerun `uv run pytest services/api/tests/test_auth.py -q` until it passes; inspect output, then refactor.
 - [ ] Run `make test-unit && make test-integration`; note real failures and security edge cases.
 - [ ] Commit task-only change, update `docs/gotchas.md`, request spec-compliance and code-quality reviews.
@@ -120,7 +120,7 @@
 
 **Files:** services/api/app/secrets/vault.py; services/api/tests/test_vault.py; services/api/app/logging/redaction.py.
 
-**Interfaces:** §encrypt_secret(secret)->secret_ref§ and §resolve_secret(secret_ref,principal)->bytes§; persistent APP_ENCRYPTION_KEY, no plaintext API read.
+**Interfaces:** `encrypt_secret(secret)->secret_ref` and `resolve_secret(secret_ref,principal)->bytes`; persistent APP_ENCRYPTION_KEY, no plaintext API read.
 
 **Test command:** `uv run pytest services/api/tests/test_vault.py -q`
 **Expected RED:** plaintext DB/log exposure, key rotation or missing-key behavior unsafe.
@@ -129,7 +129,7 @@
 - [ ] Confirm prerequisite Task commits and clean worktree; read exact Spec section.
 - [ ] Write a failing test in listed test file for: plaintext DB/log exposure, key rotation or missing-key behavior unsafe.
 - [ ] Run `uv run pytest services/api/tests/test_vault.py -q` and record failing assertion + exit code (not missing test tooling).
-- [ ] Implement only this interface: §encrypt_secret(secret)->secret_ref§ and §resolve_secret(secret_ref,principal)->bytes§; persistent APP_ENCRYPTION_KEY, no plaintext API read.
+- [ ] Implement only this interface: `encrypt_secret(secret)->secret_ref` and `resolve_secret(secret_ref,principal)->bytes`; persistent APP_ENCRYPTION_KEY, no plaintext API read.
 - [ ] Rerun `uv run pytest services/api/tests/test_vault.py -q` until it passes; inspect output, then refactor.
 - [ ] Run `make test-security`; note real failures and security edge cases.
 - [ ] Commit task-only change, update `docs/gotchas.md`, request spec-compliance and code-quality reviews.
@@ -139,7 +139,7 @@
 
 **Files:** services/api/app/models/schemas.py; services/api/app/models/routes.py; services/api/app/models/network_policy.py; services/api/tests/test_model_connections.py.
 
-**Interfaces:** §POST/GET/PATCH/DELETE /api/v1/model-connections§ and associated alias endpoints; URL/SSRF policy with admin-approved LAN exception.
+**Interfaces:** `POST/GET/PATCH/DELETE /api/v1/model-connections` and associated alias endpoints; URL/SSRF policy with admin-approved LAN exception.
 
 **Test command:** `uv run pytest services/api/tests/test_model_connections.py -q`
 **Expected RED:** wrong user sees connection, unsupported URL accepted or forbidden redirect allowed.
@@ -148,7 +148,7 @@
 - [ ] Confirm prerequisite Task commits and clean worktree; read exact Spec section.
 - [ ] Write a failing test in listed test file for: wrong user sees connection, unsupported URL accepted or forbidden redirect allowed.
 - [ ] Run `uv run pytest services/api/tests/test_model_connections.py -q` and record failing assertion + exit code (not missing test tooling).
-- [ ] Implement only this interface: §POST/GET/PATCH/DELETE /api/v1/model-connections§ and associated alias endpoints; URL/SSRF policy with admin-approved LAN exception.
+- [ ] Implement only this interface: `POST/GET/PATCH/DELETE /api/v1/model-connections` and associated alias endpoints; URL/SSRF policy with admin-approved LAN exception.
 - [ ] Rerun `uv run pytest services/api/tests/test_model_connections.py -q` until it passes; inspect output, then refactor.
 - [ ] Run `make test-security && make test-contract`; note real failures and security edge cases.
 - [ ] Commit task-only change, update `docs/gotchas.md`, request spec-compliance and code-quality reviews.
@@ -158,7 +158,7 @@
 
 **Files:** services/api/app/models/probes.py; services/api/app/models/providers/openai_compatible.py; services/api/tests/test_model_probe.py; tests/fixtures/mock_llm.py.
 
-**Interfaces:** §POST /api/v1/model-connections/{id}/test§ returns reachability/auth/inference/tool_call/observed_at with error_code.
+**Interfaces:** `POST /api/v1/model-connections/{id}/test` returns reachability/auth/inference/tool_call/observed_at with error_code.
 
 **Test command:** `uv run pytest services/api/tests/test_model_probe.py -q`
 **Expected RED:** /models-only probe falsely reports tool capable, wrong Key returns generic success.
@@ -167,7 +167,7 @@
 - [ ] Confirm prerequisite Task commits and clean worktree; read exact Spec section.
 - [ ] Write a failing test in listed test file for: /models-only probe falsely reports tool capable, wrong Key returns generic success.
 - [ ] Run `uv run pytest services/api/tests/test_model_probe.py -q` and record failing assertion + exit code (not missing test tooling).
-- [ ] Implement only this interface: §POST /api/v1/model-connections/{id}/test§ returns reachability/auth/inference/tool_call/observed_at with error_code.
+- [ ] Implement only this interface: `POST /api/v1/model-connections/{id}/test` returns reachability/auth/inference/tool_call/observed_at with error_code.
 - [ ] Rerun `uv run pytest services/api/tests/test_model_probe.py -q` until it passes; inspect output, then refactor.
 - [ ] Run `make test-integration && make test-security`; note real failures and security edge cases.
 - [ ] Commit task-only change, update `docs/gotchas.md`, request spec-compliance and code-quality reviews.
