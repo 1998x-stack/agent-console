@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+.pytest_cache/
+.venv/
+*.py[cod]
+*.egg-info/
+# JS / Next.js
+node_modules/
+.pnpm-store/
+.next/
+dist/
+coverage/
+playwright-report/
+test-results/
+# Local runtime/user data — never commit!
+data/
+.env
+.env.*
+!.env.example
+*.sqlite*
+*.db
+# Secrets and test evidence
+*.pem
+*.key
+artifacts/test-evidence/
+# Editor/OS
+.DS_Store
+.idea/
+.vscode/
