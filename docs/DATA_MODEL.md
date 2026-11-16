@@ -341,6 +341,7 @@ CREATE TABLE pi_runtime_profiles (
 );
 
 CREATE TABLE agent_run_resources (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   run_id uuid NOT NULL REFERENCES agent_runs(id),
   release_id uuid REFERENCES skill_releases(id),
   content_sha256 text,
@@ -351,4 +352,4 @@ CREATE TABLE agent_run_resources (
 );
 ```
 
-**迁移注意**：上述 `agent_run_resources` 草案的实际主键/允许 NULL 需在迁移设计中选择；对于无 Skill 的 Run 或多个 Skill 的 Run，应使用 surrogate PK 与合适的 `UNIQUE(run_id, release_id)` 部分约束。`pi_session_refs` 单写者约束需要数据库租约与 Worker 协议共同保证，单个 `UNIQUE` 不够。`agent_runs` 与 `conversation_id` 的外键、状态补充应做双写/回填/验证后再加 `NOT NULL`。
+**迁移注意**：`agent_run_resources` 使用 surrogate PK；后续应补充去重逻辑（例如带 NULL 语义的部分唯一索引），支持无 Skill 的 Run 和单次 Run 的多个 Skill。`pi_session_refs` 单写者约束需要数据库租约与 Worker 协议共同保证，单个 `UNIQUE` 不够。`agent_runs` 与 `conversation_id` 的外键、状态补充应做双写/回填/验证后再加 `NOT NULL`。
