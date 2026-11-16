@@ -11,9 +11,10 @@
 
 ## 1. 技术基线（建议，待 ADR 确认）
 - Next.js / TypeScript：Agent Workspace、Skill Studio、管理控制台。
-- Python / FastAPI：API、任务编排、Policy Engine。
+- Python / FastAPI：业务 API、持久任务队列、鉴权与 Policy Engine；**不再自研 Agent loop**。
+- Node.js / TypeScript + Pi SDK：独立 Pi Agent Worker，内置引擎版本锁定。
 - PostgreSQL：真相源与事务；Redis/Queue：消息；MinIO/S3：包和产物。
-- 独立 Office Worker 与受限 Code Sandbox；模型服务通过 adapter 访问。
+- Pi Worker 按 Office/Code Tool Profile 调度至受限沙箱；模型服务经 Model Gateway 接入。
 - Docker Compose 开发环境；生产部署方案单独维护。
 
 ## 2. 先锁定跨文档契约（必须一致）
@@ -192,3 +193,21 @@ agent-skill-platform/
 - Secrets & security：不从浏览器 API、日志、Trace、产物中泄露 Key；未实现安全沙箱则不得开放多用户第三方脚本。
 
 计划调整：**Phase 0 = Self-hosted setup + BYOK + Web Agent + Workspace persistence + built-in Skill discovery**；Phase 1 = 私人 Skill 创建/测试与安全执行完善；Phase 2 = 公共市场与多用户治理。所有新 E2E 测试未实测之前标记 `NOT RUN`。
+
+## 12. Pi Engine 的必须交付任务（覆盖原计划中“自研 Agent loop”的理解）
+
+以 [PI_AGENT_INTEGRATION.md](PI_AGENT_INTEGRATION.md) 为 Pi 研发与验收基线。
+
+| Task ID | 任务 | 验收 |
+|---|---|---|
+| PI-P0-01 | 核对 Pi 上游仓库/包名/许可证/Release 并锁定 npm 版本 | lockfile + 供应链清单 + SDK ts build |
+| PI-P0-02 | 独立 TypeScript `pi-worker`，受控 `createAgentSession` | 真实 P0 只读任务、指定 cwd、Tool allowlist |
+| PI-P0-03 | API ↔ Worker 内部协议与统一 SSE Event Adapter | run status、重连、agent_settled 与 validator |
+| PI-P0-04 | Web BYOK Model Gateway → Pi ModelRuntime | 云端和本地 OpenAI-compatible/ Ollama 真实验收 |
+| PI-P0-05 | SessionManager ↔ Conversation 索引与重启恢复 | 两轮会话、冷重启、取消与失败恢复 |
+| PI-P0-06 | Registry ↔ 受控 Pi ResourceLoader | 仅已安装 pinned Skill 被加载 |
+| PI-P0-07 | Pi Tool Gate + Sandbox + 最小挂载 + secrets proxy | 安全负面测试无越权和密钥泄漏 |
+| PI-P0-08 | Docker Compose 自托管闭环 | 浏览器选模型 → Pi 完成任务 → 工作目录/产物/Skill |
+| PI-P0-09 | RPC 兼容性 smoke | JSONL framing、取消、最终事件、失败行为 |
+
+**Phase 0 验收新增**：运行时确认为 Pi，不以虚假 Agent mock 冒充真实模型。P0 优先运行 `Pi SDK + readonly Office/Code`，P1 开放受控 Code 写入、终端与私人 Skill 创作；无法安全隔离时不能开启多用户危险执行。全部未执行项必须标注 **NOT RUN**。
