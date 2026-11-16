@@ -41,3 +41,8 @@ python3 scripts/validate_docs.py
 ```
 
 此脚本只验证文档存在性、内部 Markdown 链接与代码围栏平衡；**不是 API、数据库或安全实现的测试**。
+
+## 新增：自托管部署与用户工作区（优先阅读）
+本项目的首要交付形态为**用户本地 Docker Compose 部署的 Web Agent**：首次在 Web 配置模型提供商、API Key、Base URL 和 Model ID；每位用户的 Agent 通过受控执行环境访问逻辑目录 `/{user-id}/workspace`；内置离线可用的 Skill Store 与我的 Skill。
+
+详见 **[SELF_HOSTED_WORKSPACE_ARCHITECTURE.md](docs/SELF_HOSTED_WORKSPACE_ARCHITECTURE.md)**（Draft v0.2）。本文件是架构规范，**不是已经完成部署或通过 E2E 的证明**。建议在阅读六份原设计文档前先阅读该文件。
