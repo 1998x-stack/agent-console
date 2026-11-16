@@ -177,3 +177,13 @@ GET    /api/v1/skills/search
 - 安装记录应与用户/Workspace 绑定，安装时必须固定不可变 Release，权限申请需要运行时授权；安装动作不等于可以执行任意脚本。
 - 公共远程 Registry 必须可关闭，并在每次安装前校验来源、版本与内容哈希；本地离线安装、取消安装和重启后的安装状态必须有 E2E。
 - 本地“卸载”不得误触发公共 Listing 下架，本地“禁用”不得改写包资产所有权。
+
+## 13. Skill Registry 与 Pi Skills 的集成契约
+
+参考 [PI_AGENT_INTEGRATION.md](PI_AGENT_INTEGRATION.md)。**Agent Skills 文件格式/按需加载语义与 Pi 兼容，但商店资产所有权归我们。**
+
+- Store 将安装限定为明确的 Release digest；在 Pi 创建/重载 Session 时通过受控 `ResourceLoader` 注入本次可用的 Skill 清单。
+- 以 Pi 的 name/description progressive disclosure 作为底层加载机制；用户可通过显式 Skill 指令触发，但结果需经过我们的任务质量评测。
+- 不得未经信任审核就把上传包作为可执行 Pi Extension 或 Pi package 安装；Skill 内脚本也必须受隔离与 Tool Gateway 限制。
+- Pi 的自动发现来自当前目录和用户目录；Web 产品不能仅依赖它完成跨用户隔离。使用平台受控目录、白名单或自定义 Loader，在每次 Run 记录 Skill ID、Release、SHA-256。
+- 同一会话中安装/停用/升级 Skill 时，重新生成可用资源快照并明确向用户提示何时生效；不可改变正在执行 Run 的固定资源版本。
