@@ -16,6 +16,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.9
+          run_install: false
+      - name: Verify frozen pnpm lockfile
+        run: pnpm install --frozen-lockfile
       - name: P0A-T01 Python layout tests
         run: python3 -m unittest discover -s tests/unit -p 'test_*.py' -v
       - name: P0A-T01 Node package layout tests
@@ -24,3 +30,5 @@ jobs:
         run: |
           python3 scripts/validate_docs.py
           python3 scripts/validate_phased_docs.py
+      - name: Make check aggregate
+        run: make check
