@@ -300,3 +300,55 @@ CREATE TABLE model_aliases (
 ```
 
 所有 owner 作用域通过服务端授权读取，DB 数据存在也不意味着已完成行级安全隔离。密钥引用需关联实际加密秘密存储（含轮换/备份策略）。工作区实体沿用现有 `workspaces.owner_user_id`，磁盘路径使用 `[DATA_DIR]/users/[owner_uuid]/workspace`，不要加入可被篡改的绝对路径作为授权来源。
+
+## 10. Pi Session / Conversation / Runtime Profile 增量 Schema（Draft，NOT RUN）
+
+仅为后续迁移设计，执行前需要验证 PostgreSQL 类型、现有主外键、版本迁移与 RLS。Pi JSONL 由 Pi SessionManager 持有；数据库只记录可授权读取的索引、运行状态和审计，不直接篡改 Pi Session 文件。
+
+```sql
+CREATE TABLE agent_conversations (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  workspace_id uuid NOT NULL REFERENCES workspaces(id),
+  created_by_user_id uuid NOT NULL REFERENCES users(id),
+  title text NOT NULL DEFAULT '',
+  status text NOT NULL DEFAULT 'active'
+    CHECK (status IN ('active','archived')),
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX agent_conversations_by_workspace
+  ON agent_conversations(workspace_id, created_at DESC);
+
+CREATE TABLE pi_session_refs (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  conversation_id uuid NOT NULL UNIQUE REFERENCES agent_conversations(id),
+  session_store_ref text NOT NULL,
+  pi_package_version text NOT NULL,
+  format_version text,
+  revision bigint NOT NULL DEFAULT 0 CHECK (revision >= 0),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+-- session_store_ref 是服务端生成的内部受控引用，而不是任意客户端可提交路径。
+
+CREATE TABLE pi_runtime_profiles (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  workspace_id uuid NOT NULL REFERENCES workspaces(id),
+  mode text NOT NULL CHECK (mode IN ('general','office','code')),
+  sandbox_profile text NOT NULL,
+  allowed_tool_names jsonb NOT NULL DEFAULT '[]'::jsonb
+    CHECK (jsonb_typeof(allowed_tool_names) = 'array'),
+  created_at timestamptz NOT NULL DEFAULT now(),
+  UNIQUE(workspace_id, mode)
+);
+
+CREATE TABLE agent_run_resources (
+  run_id uuid NOT NULL REFERENCES agent_runs(id),
+  release_id uuid REFERENCES skill_releases(id),
+  content_sha256 text,
+  model_alias_id uuid REFERENCES model_aliases(id),
+  sandbox_image_digest text,
+  recorded_at timestamptz NOT NULL DEFAULT now(),
+  CHECK (content_sha256 IS NULL OR length(content_sha256) = 64)
+);
+```
+
+**迁移注意**：上述 `agent_run_resources` 草案的实际主键/允许 NULL 需在迁移设计中选择；对于无 Skill 的 Run 或多个 Skill 的 Run，应使用 surrogate PK 与合适的 `UNIQUE(run_id, release_id)` 部分约束。`pi_session_refs` 单写者约束需要数据库租约与 Worker 协议共同保证，单个 `UNIQUE` 不够。`agent_runs` 与 `conversation_id` 的外键、状态补充应做双写/回填/验证后再加 `NOT NULL`。
