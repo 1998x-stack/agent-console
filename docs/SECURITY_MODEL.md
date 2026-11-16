@@ -141,3 +141,14 @@ Decision = authenticated
 ## 参考
 - OWASP GenAI Security Project：https://genai.owasp.org/llm-top-10/
 - MCP Tools 与人类确认建议：https://modelcontextprotocol.io/specification/2026-07-28/server/tools
+
+## 11. 自托管部署关键威胁边界（新增）
+
+详见 [Self-hosted Workspace](SELF_HOSTED_WORKSPACE_ARCHITECTURE.md)。
+
+1. **用户目录**：逻辑 `/{user-id}/workspace` 只能由服务端 UID/UUID 绑定；路径和真实目录挂载不可由客户端参数直接指定。拒绝 `../`、绝对路径逃逸、符号链接和并发替换攻击。
+2. **模型密钥**：个人 Key 服务端加密，固定且安全保存 `APP_ENCRYPTION_KEY`；禁止前端回显明文、在 Agent prompt/Trace/日志/Skill 中暴露。共享模型只共享调用权，不共享明文。
+3. **连接 SSRF**：模型 Base URL 需要协议/端口/DNS/跳转验证；容器到宿主机和内网模型是部署管理员允许且审计的明确例外，防止访问云元数据地址。
+4. **执行隔离**：禁止给 Web 或 API 容器挂载宿主 `docker.sock`；第三方脚本需独立沙箱、最小挂载、资源/网络/时间限制及动作级审批。
+5. **默认部署**：先绑定 loopback、关闭未授权公开注册、保护首次管理员初始化；局域网开放要求 HTTPS/认证/备份策略。
+6. **多用户门禁**：未通过跨用户文件、密钥、任务与 Skill 隔离测试之前不得宣称支持安全的多用户任意代码执行。
