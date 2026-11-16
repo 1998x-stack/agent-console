@@ -1,0 +1,32 @@
+name: Documentation Quality
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'AGENTS.md'
+      - 'README.md'
+      - 'scripts/validate_docs.py'
+      - 'scripts/validate_phased_docs.py'
+      - '.github/workflows/documentation-quality.yml'
+  push:
+    paths:
+      - 'docs/**'
+      - 'AGENTS.md'
+      - 'README.md'
+      - 'scripts/validate_docs.py'
+      - 'scripts/validate_phased_docs.py'
+      - '.github/workflows/documentation-quality.yml'
+permissions:
+  contents: read
+jobs:
+  validate-documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Markdown framework links and fences
+        run: python3 scripts/validate_docs.py
+      - name: Phase spec-plan and acceptance traceability
+        run: python3 scripts/validate_phased_docs.py
