@@ -122,3 +122,14 @@
 - [ ] Compatibility, secrets and local-first tests do not regress.
 - [ ] Rollback, queue pressure and incident paths validated for deployed features.
 - [ ] Report partial stage scope honestly and do not merge automatically.
+
+## Explicit AC Coverage (implementation ownership)
+
+- P3-AC01 → P3-T02.
+- P3-AC02 → P3-T03.
+- P3-AC03 → P3-T04.
+- P3-AC04 → P3-T05.
+- P3-AC05 → P3-T06.
+- P3-AC06 → P3-T02, P3-T05.
+
+**Current test state:** ALL NOT RUN until a developer executes these exact tasks and records evidence.
