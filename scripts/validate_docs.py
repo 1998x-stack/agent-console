@@ -11,6 +11,8 @@ expected = [
     'SECURITY_MODEL.md',
     'DATA_MODEL.md',
     'MVP_EXECUTION_PLAN.md',
+    'SELF_HOSTED_WORKSPACE_ARCHITECTURE.md',
+    'PI_AGENT_INTEGRATION.md',
 ]
 errors=[]
 for name in expected:
