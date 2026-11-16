@@ -152,3 +152,11 @@ P0 重点：**单用户本地安装、模型 BYOK、Web Agent、工作区持久�
 - Workspace: https://docs.openwebui.com/features/workspace/
 - Skills: https://docs.openwebui.com/features/workspace/skills/
 - Hardening: https://docs.openwebui.com/getting-started/advanced-topics/hardening/
+
+## 11. 正式 Agent 引擎：Pi（2026-11-16 决策）
+
+本项目不采用自研 Agent loop 或 OpenAI Agents SDK 作为默认执行引擎。采用 **Pi Node/TypeScript SDK Worker**，通过可信内部协议接入现有 Web / FastAPI 控制平面；RPC 模式用于 PoC 与兼容性测试。详见 [PI_AGENT_INTEGRATION.md](PI_AGENT_INTEGRATION.md)。
+
+部署拓扑中的 `Runner Manager` 拆为 `pi-worker`（实际执行 Pi 的 Node 服务）与隔离 `sandbox`。Pi 在后台负责 Tool Calling/Session/Skills，前端仍通过本项目 `agent/runs`/`events` API 操作。模型连接由 Web BYOK 后由 Model Gateway 提供；不允许 Pi 扩展或第三方 Skill 直接读取用户原始 API Key。所有 `cwd` 由服务端合法用户与 Workspace 映射到 `/{user-id}/workspace`。
+
+Compose 验收新增：Pi runtime 版本已锁定、SDK 可启动、读取授权目录、Skill 注入正确、任务事件完整、取消/重启能恢复或正确失败。详细测试 PI-01 至 PI-10。
