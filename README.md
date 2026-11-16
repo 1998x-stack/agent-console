@@ -57,6 +57,6 @@ Pi 上游已迁移到 [earendil-works/pi](https://github.com/earendil-works/pi)�
 
 ## 功能深度推演与实施设计（v0.4）
 
-在原有 6 份工程基础设计、自托管专题和 Pi 集成专题之外，新增 **[功能拆解系列文档](docs/functional-decomposition/README.md)**。覆盖用户画像/端到端旅程、Web IA、BYOK 模型连接、用户工作区、Pi Runtime、Skill Store 创作/发布/下架、管理员与安全、API 与数据一致性、Docker 运维、对抗评测、PR Backlog、ADR 风险，以及 **79 项功能追踪矩阵**。
+在原有 6 份工程基础设计、自托管专题和 Pi 集成专题之外，新增 **[功能拆解系列文档](docs/functional-decomposition/README.md)**。覆盖用户画像/端到端旅程、Web IA、BYOK 模型连接、用户工作区、Pi Runtime、Skill Store 创作/发布/下架、管理员与安全、API 与数据一致性、Docker 运维、对抗评测、PR Backlog、ADR 风险，以及 **79 项功能追踪矩阵**和 Open WebUI × Pi 的参考实现对照。
 
 **阅读顺序**：先看 [功能目录](docs/functional-decomposition/README.md)，再看 [13 功能矩阵](docs/functional-decomposition/13_FEATURE_MATRIX_AND_TRACEABILITY.md)，根据工作项阅读各专题。完整设计不代表已实现；Docker、Pi SDK、DB Migration 和真实 E2E 仍为 **NOT RUN**。
