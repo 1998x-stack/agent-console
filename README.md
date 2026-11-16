@@ -54,3 +54,9 @@ python3 scripts/validate_docs.py
 Pi 上游已迁移到 [earendil-works/pi](https://github.com/earendil-works/pi)，官方包名为 `@earendil-works/pi-coding-agent`（需发行版锁定和实际验证）。**Pi 本身不提供可信的文件/进程/网络权限隔离**；隔离、审批、密钥控制仍由本项目提供。原六份文档保留业务契约；新增两份实施专题：[自托管架构](docs/SELF_HOSTED_WORKSPACE_ARCHITECTURE.md)、[Pi 集成](docs/PI_AGENT_INTEGRATION.md)。
 
 仍为设计阶段：Pi SDK 构建、Docker 启动、模型调用、沙箱和 E2E 全部 **NOT RUN**。
+
+## 功能深度推演与实施设计（v0.4）
+
+在原有 6 份工程基础设计、自托管专题和 Pi 集成专题之外，新增 **[功能拆解系列文档](docs/functional-decomposition/README.md)**。覆盖用户画像/端到端旅程、Web IA、BYOK 模型连接、用户工作区、Pi Runtime、Skill Store 创作/发布/下架、管理员与安全、API 与数据一致性、Docker 运维、对抗评测、PR Backlog、ADR 风险，以及 **79 项功能追踪矩阵**。
+
+**阅读顺序**：先看 [功能目录](docs/functional-decomposition/README.md)，再看 [13 功能矩阵](docs/functional-decomposition/13_FEATURE_MATRIX_AND_TRACEABILITY.md)，根据工作项阅读各专题。完整设计不代表已实现；Docker、Pi SDK、DB Migration 和真实 E2E 仍为 **NOT RUN**。
