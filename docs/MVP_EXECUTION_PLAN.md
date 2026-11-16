@@ -179,3 +179,16 @@ agent-skill-platform/
 标题建议：`chore: bootstrap workspace, contracts, CI, and P0 fixtures`
 
 **只包含**：repo skeleton、六份架构文档、OpenAPI/SSE schema 占位文件、配置模板、基础 CI、最小失败样例、docs/gotchas.md。先获得清晰可测的工程基线，而不是先画完整 UI。
+
+## 11. 首发自托管用户旅程与阶段调整（新增）
+
+以 [Self-hosted Workspace](SELF_HOSTED_WORKSPACE_ARCHITECTURE.md) 作为 Docker 本地部署的优先验收规范。原 Phase 0 Runtime 门禁仍需满足，**额外必须完成以下 P0 场景**：
+
+- 冷启动：`docker compose up -d --build` 无模型 Key 仍可打开 Web；首次安全创建管理员；健康检查及日志可用。
+- 模型：在 Web 输入 Base URL / API Key / Model ID，连接、生成、错误诊断可用；宿主 Ollama 与远端兼容 API 分别评测。
+- Agent：至少一个 Office 文件闭环 + 一个 Code 仓库只读/受限修改闭环；流式进展、取消、失败报告可见。
+- Workspace：首任务安全创建 `/{user-id}/workspace`，持久数据映射且重启不丢失；跨用户访问负例测试。
+- Skill Store：内置离线 Skill 可从 Web 浏览，安装后对 Agent 生效；“我的 Skill”留在用户工作台。
+- Secrets & security：不从浏览器 API、日志、Trace、产物中泄露 Key；未实现安全沙箱则不得开放多用户第三方脚本。
+
+计划调整：**Phase 0 = Self-hosted setup + BYOK + Web Agent + Workspace persistence + built-in Skill discovery**；Phase 1 = 私人 Skill 创建/测试与安全执行完善；Phase 2 = 公共市场与多用户治理。所有新 E2E 测试未实测之前标记 `NOT RUN`。
