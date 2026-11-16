@@ -154,3 +154,17 @@
 - [ ] Role/permission attack and approval races audited.
 - [ ] Creator Unlist does not delete previous users' installation; moderator Revoke blocks actual execution.
 - [ ] Local mode unchanged and verified; no merge without user approval.
+
+## Explicit AC Coverage (implementation ownership)
+
+- P2-AC01 → P2-T01, P2-T08.
+- P2-AC02 → P2-T02, P2-T03, P2-T08.
+- P2-AC03 → P2-T05, P2-T06, P2-T08.
+- P2-AC04 → P2-T07, P2-T08.
+- P2-AC05 → P2-T07, P2-T08.
+- P2-AC06 → P2-T06, P2-T07, P2-T08.
+- P2-AC07 → P2-T04, P2-T08.
+- P2-AC08 → P2-T08.
+- P2-AC09 → P2-T03, P2-T05, P2-T06, P2-T08.
+
+**Current test state:** ALL NOT RUN until a developer executes these exact tasks and records evidence.
