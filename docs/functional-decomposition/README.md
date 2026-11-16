@@ -34,6 +34,7 @@
 | [11_ROADMAP_AND_BACKLOG.md](11_ROADMAP_AND_BACKLOG.md) | MVP 先做什么，怎么切 PR？ | P0-P3、依赖、Definition of Done |
 | [12_DECISIONS_AND_RISKS.md](12_DECISIONS_AND_RISKS.md) | 哪些决定已冻结，哪些需要实验？ | ADR、风险、备选方案 |
 | [13_FEATURE_MATRIX_AND_TRACEABILITY.md](13_FEATURE_MATRIX_AND_TRACEABILITY.md) | 功能到底有多少、由谁负责、何时验收？ | 79 项功能的角色/阶段/测试映射 |
+| [14_OPENWEBUI_PI_REFERENCE_MAPPING.md](14_OPENWEBUI_PI_REFERENCE_MAPPING.md) | Open WebUI 哪些值得借鉴，Pi 又补什么？ | 官方能力对照、明确不照搬清单 |
 
 ## 核心场景（端到端验收线）
 
